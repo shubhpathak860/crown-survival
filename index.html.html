@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Crown Survival - a fast browser survival game. Survive enemy waves, collect diamonds and climb the score.">
+<title>Crown Survival — Online Survival Game</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#060606;color:#fff}body{overflow-x:hidden}
+:root{--red:#e50914;--red2:#720006;--panel:#121212;--line:#3b1111}
+button{font:inherit}.wrap{max-width:1180px;margin:auto;padding:0 18px}
+header{position:sticky;top:0;z-index:20;background:#080808eF;border-bottom:1px solid #451010;backdrop-filter:blur(12px)}
+.nav{height:68px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:1000;letter-spacing:2px;font-size:21px}.brand b{font-size:30px;margin-right:7px}.navlinks{display:flex;gap:8px}.navlinks a{color:#ddd;text-decoration:none;padding:10px 12px;border-radius:9px}.navlinks a:hover{background:#260000;color:#fff}
+.hero{padding:55px 0 35px;text-align:center;background:radial-gradient(circle at 50% 0,#7b0000 0,#220000 32%,#060606 70%)}.crown{font-size:62px;filter:drop-shadow(0 0 16px #f00)}h1{font-size:clamp(40px,8vw,82px);line-height:.9;margin:12px 0;text-shadow:0 0 25px #f00}.hero p{color:#ccc;max-width:650px;margin:18px auto 26px;font-size:17px}.cta{display:inline-block;border:0;background:linear-gradient(135deg,#ff2633,#920008);color:#fff;text-decoration:none;font-weight:900;padding:15px 30px;border-radius:13px;box-shadow:0 10px 30px #f0000038;cursor:pointer}.cta:hover{filter:brightness(1.15)}
+.ad{margin:22px auto;max-width:970px;min-height:90px;border:1px dashed #5b2020;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#777;background:#0d0d0d;font-size:12px}
+.section{padding:32px 0}.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}.card{background:linear-gradient(145deg,#151515,#0d0d0d);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 35px #0008}.card h2{margin:0 0 10px}.muted{color:#aaa}.gamebox{height:540px;position:relative;border:2px solid #741018;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 30%,#3b1515,#101010 65%);cursor:crosshair}
+#world{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 49px,#291515 50px),repeating-linear-gradient(90deg,transparent 0 49px,#291515 50px)}
+#player{position:absolute;width:40px;height:40px;transform:translate(-50%,-50%);border-radius:50%;border:3px solid #fff;background:radial-gradient(circle,#fff,#ff3b3b 35%,#8a0000 70%);box-shadow:0 0 24px red;z-index:3}.enemy{position:absolute;width:32px;height:32px;border-radius:8px;border:2px solid #f33;background:#101010;box-shadow:0 0 13px red}.enemy:after{content:"";position:absolute;inset:7px;border-radius:50%;background:#f22}.bullet{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px #f33}.coin{position:absolute;width:21px;height:21px;border-radius:50%;background:#ffd43b;border:2px solid #fff8;box-shadow:0 0 12px #ffc400}
+.hud{position:absolute;z-index:5;top:12px;left:12px;right:12px;display:flex;justify-content:space-between}.meter{width:190px;background:#000b;border:1px solid #f44;border-radius:9px;padding:5px;font-size:11px}.fill{height:8px;border-radius:8px;background:linear-gradient(90deg,#f00,#ff7c7c);width:100%;margin-top:4px}
+#gameOverlay{position:absolute;z-index:10;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;text-align:center;padding:20px}.gamePanel{max-width:480px;background:#180000eF;border:1px solid #f33;border-radius:20px;padding:28px}.gamePanel h2{font-size:38px;margin:8px 0}
+.infoGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.mini{padding:15px;border-radius:13px;background:#0b0b0b;border:1px solid #331010;text-align:center}.mini strong{display:block;font-size:23px}.rank li{display:flex;justify-content:space-between;padding:11px 4px;border-bottom:1px solid #281010;color:#ddd}
+footer{border-top:1px solid #281010;color:#888;padding:25px 0;text-align:center;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.navlinks{display:none}.gamebox{height:470px}.infoGrid{grid-template-columns:1fr}.hero{padding-top:35px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><div class="brand"><b>👑</b>CROWN SURVIVAL</div><div class="navlinks"><a href="#play">Play</a><a href="#rewards">Rewards</a><a href="#ranking">Ranking</a></div></div></header>
+
+<section class="hero"><div class="wrap"><div class="crown">👑</div><h1>CROWN<br>SURVIVAL</h1><p>Survive the waves. Collect diamonds. Beat your high score.</p><a class="cta" href="#play">⚔ PLAY FREE</a></div></section>
+
+<div class="wrap"><div class="ad">ADVERTISEMENT SPACE — connect your approved ad network here</div></div>
+
+<section class="section" id="play"><div class="wrap">
+<div class="grid">
+<div class="card"><h2>🎮 Survival Arena</h2><p class="muted">WASD / Arrow Keys to move • Click or tap to shoot</p>
+<div class="gamebox" id="game"><div id="world"><div id="player"></div></div>
+<div class="hud"><div class="meter">❤️ HEALTH<div class="fill" id="health"></div></div><div class="meter" style="text-align:right">⏱ <span id="timer">60</span>s • 💎 <span id="diamonds">0</span><div class="fill" id="timebar"></div></div></div>
+<div id="gameOverlay"><div class="gamePanel"><div style="font-size:50px">👑</div><h2>Ready?</h2><p class="muted">Survive as long as possible and collect diamonds.</p><button class="cta" id="start">START GAME</button></div></div>
+</div></div>
+
+<div>
+<div class="card" id="rewards"><h2>🎁 Daily Reward</h2><p class="muted">Claim your free virtual reward once per session.</p><button class="cta" id="reward">CLAIM +50 💎</button><p id="rewardMsg" class="muted"></p></div>
+<div class="card" style="margin-top:20px" id="ranking"><h2>🏆 Top Players</h2><ol class="rank"><li><span>👑 ShadowKing</span><b>9,840</b></li><li><span>🔥 RedHunter</span><b>8,720</b></li><li><span>⚡ CrownX</span><b>7,910</b></li><li><span>🎯 You</span><b id="yourScore">0</b></li></ol></div>
+</div>
+</div>
+</div></section>
+
+<div class="wrap"><div class="ad">ADVERTISEMENT SPACE — 728×90 / responsive ad placement</div></div>
+<footer>Crown Survival © 2026 • Virtual diamonds have no cash value and are not Free Fire diamonds.</footer>
+
+<script>
+(()=>{const game=document.getElementById('game'),world=document.getElementById('world'),p=document.getElementById('player'),overlay=document.getElementById('gameOverlay'),start=document.getElementById('start');
+let keys={},x=50,y=55,hp=100,diamonds=0,score=0,wave=1,time=60,running=false,last=0,spawn=0,shoot=0,en=[],bul=[],coins=[],raf;
+const $=id=>document.getElementById(id);
+function place(e,a,b){e.style.left=a+'%';e.style.top=b+'%'}
+function ui(){$('health').style.width=Math.max(0,hp)+'%';$('timer').textContent=Math.ceil(time);$('diamonds').textContent=diamonds;$('timebar').style.width=Math.max(0,time/60*100)+'%'}
+function enemy(){let e=document.createElement('div');e.className='enemy';let a=Math.random()*6.28,r=38+Math.random()*25,ex=Math.max(3,Math.min(97,x+Math.cos(a)*r)),ey=Math.max(8,Math.min(97,y+Math.sin(a)*r));place(e,ex,ey);world.appendChild(e);en.push({el:e,x:ex,y:ey})}
+function coin(){let e=document.createElement('div');e.className='coin';let a=5+Math.random()*90,b=10+Math.random()*82;place(e,a,b);world.appendChild(e);coins.push({el:e,x:a,y:b})}
+function fire(tx,ty){if(!running||shoot>0)return;shoot=.16;let e=document.createElement('div');e.className='bullet';place(e,x,y);world.appendChild(e);let dx=tx-x,dy=ty-y,d=Math.hypot(dx,dy)||1;bul.push({el:e,x,y,vx:dx/d*95,vy:dy/d*95})}
+function near(a,b){return Math.hypot(a.x-b.x,a.y-b.y)<4.7}
+function finish(win){running=false;cancelAnimationFrame(raf);overlay.style.display='flex';overlay.firstElementChild.innerHTML='<div style="font-size:50px">'+(win?'👑':'💀')+'</div><h2>'+(win?'CHAMPION!':'GAME OVER')+'</h2><p class="muted">Score: <b>'+score+'</b> • Diamonds: <b>'+diamonds+'</b></p><button class="cta" id="again">PLAY AGAIN</button>';$('yourScore').textContent=score;$('again').onclick=startGame}
+function startGame(){world.querySelectorAll('.enemy,.bullet,.coin').forEach(e=>e.remove());en=[];bul=[];coins=[];x=50;y=55;hp=100;diamonds=0;score=0;wave=1;time=60;running=true;overlay.style.display='none';ui();last=performance.now();spawn=0;raf=requestAnimationFrame(loop)}
+function loop(t){if(!running)return;let dt=Math.min(.04,(t-last)/1000||0);last=t;time-=dt;if(time<=0){time=60;wave++;hp=Math.min(100,hp+20);for(let i=0;i<wave+1;i++)enemy()}shoot=Math.max(0,shoot-dt);let dx=(keys.d||keys.ArrowRight?1:0)-(keys.a||keys.ArrowLeft?1:0),dy=(keys.s||keys.ArrowDown?1:0)-(keys.w||keys.ArrowUp?1:0),d=Math.hypot(dx,dy)||1;x=Math.max(3,Math.min(97,x+dx/d*35*dt));y=Math.max(8,Math.min(97,y+dy/d*35*dt));place(p,x,y);spawn-=dt;if(spawn<=0){enemy();spawn=Math.max(.35,1.35-wave*.04)}if(Math.random()<dt*.18)coin();
+for(let i=en.length-1;i>=0;i--){let e=en[i],dx=x-e.x,dy=y-e.y,d=Math.hypot(dx,dy)||1;e.x+=dx/d*9*dt;e.y+=dy/d*9*dt;place(e.el,e.x,e.y);if(near(e,{x,y})){hp-=24*dt;if(hp<=0){finish(false);return}}}
+for(let i=bul.length-1;i>=0;i--){let b=bul[i];b.x+=b.vx*dt;b.y+=b.vy*dt;place(b.el,b.x,b.y);if(b.x<0||b.x>100||b.y<0||b.y>100){b.el.remove();bul.splice(i,1);continue}for(let j=en.length-1;j>=0;j--)if(near(b,en[j])){score+=10;en[j].el.remove();en.splice(j,1);b.el.remove();bul.splice(i,1);break}}
+for(let i=coins.length-1;i>=0;i--)if(near(coins[i],{x,y})){diamonds+=5;coins[i].el.remove();coins.splice(i,1)}ui();raf=requestAnimationFrame(loop)}
+addEventListener('keydown',e=>{keys[e.key]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault()});addEventListener('keyup',e=>keys[e.key]=false);
+function aim(e){let r=world.getBoundingClientRect();fire((e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100)}
+world.addEventListener('click',e=>running&&aim(e));world.addEventListener('touchstart',e=>running&&e.touches[0]&&aim(e.touches[0]),{passive:true});start.onclick=startGame;
+$('reward').onclick=()=>{$('reward').disabled=true;$('reward').textContent='CLAIMED ✓';$('rewardMsg').textContent='🎉 +50 virtual diamonds added!';diamonds+=50;ui()};ui();
+})();
+</script>
+</body>
+</html>
